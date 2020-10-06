@@ -1,7 +1,6 @@
 # Thanks to this GitHub project:
 # https://github.com/henrifroese/infectious_disease_modelling
 # for the basis of this code
-#another test
 
 from scipy.integrate import odeint
 import numpy as np
