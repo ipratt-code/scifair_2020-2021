@@ -20,7 +20,7 @@ delta = 1.0 / Incubation_period  # incubation period
 beta = R_0 * gamma  # R_0 = beta / gamma, so beta = R_0 * gamma
 alpha = 0.3  # death rate
 rho = 1/days_till_death  # days from infection until death
-
+#test123
 def deriv(y, t, N, beta, gamma, delta, alpha, rho):
     S, E, I, R, D = y
     dSdt = -beta * S * I / N
