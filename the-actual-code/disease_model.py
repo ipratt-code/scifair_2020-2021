@@ -7,6 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # variables to tweak
+disease_name = "SARS-CoV-2"
 N = 330467360 # amount of people
 Infection_period = 14 # infection period
 Incubation_period = 0.001 # incubation period
@@ -45,7 +46,9 @@ y0 = S0, E0, I0, R0, D0 # Initial conditions vector
 ret = odeint(deriv, y0, t, args=(N, beta, gamma, delta, alpha, rho))
 S, E, I, R, D = ret.T
 
-print('Total amount of people killed: ' + str(round(D[-1])))
+data_array = [S,E,I,R,D]
+
+np.savetxt(disease_name+'.csv', data_array, delimiter=',', fmt='%d')
 
 # Making the plot
 f, ax = plt.subplots(1,1,figsize=(10,4))
