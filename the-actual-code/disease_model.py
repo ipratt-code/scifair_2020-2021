@@ -13,19 +13,29 @@ Infection_period = 14 # infection period
 Incubation_period = 0.001 # incubation period
 days_till_death = 14 # days untill someone dies from disease
 starting_infected = 1 # how many people start infected
-how_long = 1000 # how many days for simulation to run
+how_long = 2000 # how many days for simulation to run
 R_0 = 2.22 # R naught
+mask_effectiveness_in = .50 # in percentages
+mask_effectiveness_out = .50 # in percentages
+compliance = .50 # in percentages
 
 gamma = 1.0 / Infection_period # infection period
 delta = 1.0 / Incubation_period  # incubation period
-beta = R_0 * gamma  # R_0 = beta / gamma, so beta = R_0 * gamma
+beta = R_0 * gamma  # R_0 = beta / gamma, so beta = R_0 * gamma. Its the infectivity
 alpha = 0.3  # death rate
 rho = 1/days_till_death  # days from infection until death
+epsilon = (1 - mask_effectiveness_in * compliance) * (1 - mask_effectiveness_out * compliance)
+print(epsilon)
+'''
+The average relative risk to each mask wearer is 
+(1 - mask_effectiveness_in * compliance)*(1 - mask_effectiveness_out * compliance)
+The math behind this can be found at https://github.com/aatishb/maskmath/blob/master/model/mathmodel.ipynb
+'''
 
-def deriv(y, t, N, beta, gamma, delta, alpha, rho):
+def deriv(y, t, N, beta, gamma, delta, alpha, rho, full_output = 1):
     S, E, I, R, D = y
-    dSdt = -beta * S * I / N
-    dEdt = beta * S * I / N - delta * E
+    dSdt = -beta * S * I * epsilon/ N
+    dEdt = beta * S * I * epsilon/ N - delta * E
     dIdt = delta * E - (1 - alpha) * gamma * I - alpha * rho * I
     dRdt = (1 - alpha) * gamma * I
     dDdt = alpha * rho * I
@@ -36,9 +46,9 @@ S0, E0, I0, R0, D0 = N - starting_infected, 0, starting_infected, 0, 0  # initia
                                                                         # susceptible
 
 t = np.linspace(0, how_long, 1000) # Grid of time points (in days) 
-                                  # NOTE: the last variable num is how granular it 
-                                  # will be when you integrate the derivatives.
-                                  # preference is to set it equal to how_long
+                                   # NOTE: the last variable num is how granular it 
+                                   # will be when you integrate the derivatives.
+                                   # preference is to set it equal to how_long
 
 y0 = S0, E0, I0, R0, D0 # Initial conditions vector
 
@@ -52,6 +62,8 @@ np.savetxt(disease_name+'.csv', data_array, delimiter=',', fmt='%d')
 
 # Making the plot
 f, ax = plt.subplots(1,1,figsize=(10,4))
+
+print("There are " + str(round(D[-1])) + " deaths.")
 
 # plots for the separate parameters
 ax.plot(t, S, 'b', alpha=0.7, linewidth=2, label='Susceptible')
