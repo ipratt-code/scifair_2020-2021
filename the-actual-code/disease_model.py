@@ -7,12 +7,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # variables to tweak
-N = 5000000 # amount of people
+N = 330467360 # amount of people
 Infection_period = 14 # infection period
-Incubation_period = 11 # incubation period
+Incubation_period = 0.001 # incubation period
 days_till_death = 14 # days untill someone dies from disease
 starting_infected = 1 # how many people start infected
-how_long = 600 # how many days for simulation to run
+how_long = 1000 # how many days for simulation to run
 R_0 = 2.22 # R naught
 
 gamma = 1.0 / Infection_period # infection period
@@ -34,9 +34,10 @@ S0, E0, I0, R0, D0 = N - starting_infected, 0, starting_infected, 0, 0  # initia
                                                                         # one infected, rest 
                                                                         # susceptible
 
-t = np.linspace(0, how_long, 100) # Grid of time points (in days) 
+t = np.linspace(0, how_long, 1000) # Grid of time points (in days) 
                                   # NOTE: the last variable num is how granular it 
                                   # will be when you integrate the derivatives.
+                                  # preference is to set it equal to how_long
 
 y0 = S0, E0, I0, R0, D0 # Initial conditions vector
 
