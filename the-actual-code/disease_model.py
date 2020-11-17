@@ -58,12 +58,12 @@ S, E, I, R, D = ret.T
 
 data_array = [S,E,I,R,D]
 
-np.savetxt(disease_name+'.csv', data_array, delimiter=',', fmt='%d')
+np.savetxt(disease_name+'~'+str(N)+'.csv', data_array, delimiter=',', fmt='%d')
 
 # Making the plot
 f, ax = plt.subplots(1,1,figsize=(10,4))
 
-print("There are approximately" + str(round(D[-1])) + " deaths.")
+print("There are approximately " + str(round(D[-1])) + " deaths.")
 
 # plots for the separate parameters
 ax.plot(t, S, 'b', alpha=0.7, linewidth=2, label='Susceptible')
