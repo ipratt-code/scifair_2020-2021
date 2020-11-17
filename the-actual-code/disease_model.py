@@ -63,7 +63,7 @@ np.savetxt(disease_name+'.csv', data_array, delimiter=',', fmt='%d')
 # Making the plot
 f, ax = plt.subplots(1,1,figsize=(10,4))
 
-print("There are " + str(round(D[-1])) + " deaths.")
+print("There are approximately" + str(round(D[-1])) + " deaths.")
 
 # plots for the separate parameters
 ax.plot(t, S, 'b', alpha=0.7, linewidth=2, label='Susceptible')
@@ -72,7 +72,7 @@ ax.plot(t, I, 'r', alpha=0.7, linewidth=2, label='Infected')
 ax.plot(t, R, 'g', alpha=0.7, linewidth=2, label='Recovered')
 ax.plot(t, D, 'k', alpha=0.7, linewidth=2, label='Dead')
 
-ax.set_title('Affect of a virus on a population of 5000000')
+ax.set_title('Affect of ' + disease_name + ' on a population of ' + str(N))
 
 ax.set_xlabel('Time (days)')
 ax.set_ylabel('Number of people')
