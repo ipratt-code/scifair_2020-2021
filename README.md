@@ -1,4 +1,4 @@
- [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+ [![License: MIT](https://img.shields.io/github/license/ipratt-code/scifair_2020-2021)](https://opensource.org/licenses/MIT)
  ![](https://pyup.io/repos/github/ipratt-code/scifair_2020-2021/shield.svg)
  ![](https://pyup.io/repos/github/ipratt-code/scifair_2020-2021/python-3-shield.svg)
 # scifair_2020-2021
