@@ -1,6 +1,7 @@
  [![License: MIT](https://img.shields.io/github/license/ipratt-code/scifair_2020-2021)](https://github.com/ipratt-code/scifair_2020-2021/blob/master/LICENSE)
  ![](https://pyup.io/repos/github/ipratt-code/scifair_2020-2021/shield.svg)
  ![](https://pyup.io/repos/github/ipratt-code/scifair_2020-2021/python-3-shield.svg)
+ [![code-style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 # scifair_2020-2021
 My science fair project for the science fair 2020-2021.<br>
 Runs a (rough) simulation of disease spread.<br>
