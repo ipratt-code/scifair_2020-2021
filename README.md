@@ -1,4 +1,4 @@
- [![License: MIT](https://img.shields.io/github/license/ipratt-code/scifair_2020-2021)](https://opensource.org/licenses/MIT)
+ [![License: MIT](https://img.shields.io/github/license/ipratt-code/scifair_2020-2021)](https://github.com/ipratt-code/scifair_2020-2021/blob/master/LICENSE)
  ![](https://pyup.io/repos/github/ipratt-code/scifair_2020-2021/shield.svg)
  ![](https://pyup.io/repos/github/ipratt-code/scifair_2020-2021/python-3-shield.svg)
 # scifair_2020-2021
@@ -6,7 +6,7 @@ My science fair project for the science fair 2020-2021.<br>
 Runs a (rough) simulation of disease spread.<br>
 NOTE: this is licensed under the MIT public license, so do with it what you want!<br>
 Credit for the basis of this code goes to this repo: https://github.com/henrifroese/infectious_disease_modelling<br>
-The original license for that project is located in SOURCE_LICENSE<br>
+The original license for that project is located in OTHER_LICENSES/SOURCE_LICENSE<br>
 
 # How to install:
 Download this repo, and extract if neccissary.<br>
