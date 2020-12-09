@@ -1,0 +1,48 @@
+model_constants:
+  name: "USA"
+  population_size: 1
+  lmfit_model: "models/usa.model.sav"
+  fit_method: "least_sqares"
+
+train:
+  coronavirus:
+    fixed_parameters:
+      R_0: 2.79
+      death_rate: 0.0269
+      infection_period: 14
+      incubation_period: 5
+      days_until_death: 17.8
+      how_many_days: 500
+
+
+test:
+  how_many_days: 500
+  coronavirus:
+    R_0: 2.79
+    death_rate: 0.0269
+    infection_period: 14
+    incubation_period: 5
+    days_until_death: 17.8
+
+  measles:
+    R_0: 15
+    death_rate: 0.097
+    infection_period: 9
+    incubation_period: 7 
+    days_until_death: 12
+
+  1918h1n1:
+    R_0: 2.5
+    death_rate: 0.02
+    infection_period: 4.1
+    incubation_period: 1.9
+    days_until_death: 4.1
+
+  smallpox:
+    R_0: 4.75
+    death_rate: 0.3
+    infection_period: 14
+    incubation_period: 12
+    days_until_death: 14    
+
+flexible_params:

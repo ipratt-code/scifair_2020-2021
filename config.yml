@@ -1,0 +1,13 @@
+# change this to change the model used
+model_file: "usa.model-conf.yml"
+
+# DO NOT CHANGE THIS
+# there is no data to replace this for other diseases 
+train:
+  disease_name: "coronavirus"
+
+# DO NOT CHANGE THIS
+# unless you are planning on making different diseases
+test:
+  diseases: ["coronavirus"] #, "smallpox", "measles", "h1n1"]
+
