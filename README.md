@@ -10,6 +10,6 @@ Credit for the basis of this code goes to this repo: https://github.com/henrifro
 The original license for that project is located in OTHER_LICENSES/SOURCE_LICENSE<br>
 
 # How to install:
-Download this repo, and extract if neccissary.<br>
-run `make install_prereq` for just installing the prerequisites, or run `make` to both install prerequisites and run the program.<br>
+Download this repo, and extract if necissary.<br>
+Run `python3 -mpip install -r requirements.txt` prerequisites and run the program.<br>
 TODO: YAML or other file for configuration of program.<br>
