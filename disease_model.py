@@ -12,27 +12,30 @@ from lmfit.model import save_modelresult, load_modelresult
 
 import warnings
 import yaml
+from pathlib import Path
 
 warnings.filterwarnings("ignore")
 
+config_path = Path.cwd() / "config.yml"
 # read the configuration
-with open(r"config.yml") as conf:
+with open(config_path, "r") as conf:
     config = yaml.load(conf, Loader=yaml.FullLoader)
     conf.close()
 
 disease = config["train"]["disease_name"]
 
-with open(r"models/" + config["model_file"]) as file:
-    data = yaml.load(file, Loader=yaml.FullLoader)
+model = Path.cwd() / "models" / config["model_file"]
+
+with open(model, "r") as file:
+    mod_data = yaml.load(file, Loader=yaml.FullLoader)
     file.close()
+# store_file = mod_data["model_constants"]["lmfit_model"]
 
-store_file = data["model_constants"]["lmfit_model"]
-
-R_0 = data["train"][disease]["fixed_parameters"]["R_0"]
-Infection_period = data["train"][disease]["fixed_parameters"]["infection_period"]
-Incubation_period = data["train"][disease]["fixed_parameters"]["incubation_period"]
-alpha = data["train"][disease]["fixed_parameters"]["death_rate"]
-days_till_death = data["train"][disease]["fixed_parameters"]["days_until_death"]
+R_0 = mod_data["train"][disease]["fixed_parameters"]["R_0"]
+Infection_period = mod_data["train"][disease]["fixed_parameters"]["infection_period"]
+Incubation_period = mod_data["train"][disease]["fixed_parameters"]["incubation_period"]
+alpha = mod_data["train"][disease]["fixed_parameters"]["death_rate"]
+days_till_death = mod_data["train"][disease]["fixed_parameters"]["days_until_death"]
 
 # read the data
 agegroups = pd.read_csv("data/agegroups.csv")
@@ -333,7 +336,7 @@ def fitter(
     return ret[5][x]
 
 
-def fit(fitter, days, data, population_size, params_init_min_max, store_file):
+def fit(fitter, days, data, population_size, params_init_min_max, model_file):
 
     if outbreak_shift >= 0:
         y_data = np.concatenate((np.zeros(outbreak_shift), data))
@@ -374,21 +377,24 @@ def fit(fitter, days, data, population_size, params_init_min_max, store_file):
         x_ticks=x_ticks,
     )
 
-    save_modelresult(result, store_file)
-    return result.best_values
+    with open(model_file, "w") as file:
+        for param in result.best_values:
+            mod_data["flexible_params"][param] = float(result.best_values[param])
+        yaml.dump(mod_data, file)
+    # return result.best_values
 
 
-"""
-def predict(days, data, population_size, params_init_min_max, store_file):
+def predict(days, population_size, params_init_min_max, model_file):
+    with open(model_file, "r") as f:
+        mod = yaml.load(f, Loader=yaml.FullLoader)
     plotter(
         *Model(
-            full_days,
+            days,
             population_size,
-            **result.best_values,
+            **mod["flexible_params"],
         ),
-        x_ticks=x_ticks,
+        x_ticks=days,
     )
-"""
 
-x = fit(fitter, days, data, population_size, params_init_min_max, store_file)
-print(x)
+
+fit(fitter, days, data, population_size, params_init_min_max, model)
