@@ -11,5 +11,5 @@ The original license for that project is located in OTHER_LICENSES/SOURCE_LICENS
 
 # How to install:
 Download this repo, and extract if necissary.<br>
-Run `python3 -mpip install -r requirements.txt` prerequisites and run the program.<br>
+Run `python3 -mpip install -r requirements.txt` to install the prerequisites and run the program.<br>
 TODO: YAML or other file for configuration of program.<br>
