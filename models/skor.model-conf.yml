@@ -1,0 +1,51 @@
+accuracy: 0.9960619035740538
+flexible_params:
+  R_0_end_mult: 0.30000044434211365
+  R_0_middle_mult: 4.053750064221749
+  R_0_start_mult: 1.0241147245513413
+  compliance: 0.8731183826949385
+  k1: 4.797916730949491
+  k2: 2.920073953966833
+  mask_effectiveness_in: 0.7379491798258071
+  mask_effectiveness_out: 0.742254463960659
+  x01: 146.97880900184475
+  x02: 80.65575329998181
+model_constants:
+  fit_method: least_sqares
+  how_many_days: 500
+  name: South Korea
+  population_size: 1
+test:
+  1918h1n1:
+    R_0: 2.5
+    days_until_death: 4.1
+    death_rate: 0.02
+    incubation_period: 1.9
+    infection_period: 4.1
+  coronavirus:
+    R_0: 2.79
+    days_until_death: 17.8
+    death_rate: 0.0269
+    incubation_period: 5
+    infection_period: 14
+  measles:
+    R_0: 15
+    days_until_death: 12
+    death_rate: 0.097
+    incubation_period: 7
+    infection_period: 9
+  smallpox:
+    R_0: 4.75
+    days_until_death: 14
+    death_rate: 0.3
+    incubation_period: 12
+    infection_period: 14
+train:
+  coronavirus:
+    fixed_parameters:
+      R_0: 2.79
+      days_until_death: 17.8
+      death_rate: 0.0269
+      how_many_days: 500
+      incubation_period: 5
+      infection_period: 14

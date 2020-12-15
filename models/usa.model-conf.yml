@@ -1,18 +1,18 @@
 flexible_params:
-  R_0_end_mult: 0.36589540900393147
-  R_0_middle_mult: 0.47737311068117527
-  R_0_start_mult: 3.467385907781174
-  compliance: 0.5704712950944938
-  k1: 4.161327257257117
-  k2: 3.738045584767367
-  mask_effectiveness_in: 0.539321341546169
-  mask_effectiveness_out: 0.538503721476356
-  x01: 81.26491975768987
-  x02: 81.49101912725057
+  R_0_end_mult: 0.3000039396448761
+  R_0_middle_mult: 1.2769262046076193
+  R_0_start_mult: 1.8353202424368482
+  compliance: 0.6342926039375912
+  k1: 4.940394609789104
+  k2: 1.6258307254504456
+  mask_effectiveness_in: 0.5568145484760095
+  mask_effectiveness_out: 0.5582795346851287
+  x01: 73.16205985890957
+  x02: 67.42890190020573
 model_constants:
   fit_method: least_sqares
-#  lmfit_model: models/usa.model.sav
-  name: USA
+  how_many_days: 500
+  name: United States
   population_size: 1
 test:
   1918h1n1:
@@ -27,7 +27,6 @@ test:
     death_rate: 0.0269
     incubation_period: 5
     infection_period: 14
-  how_many_days: 500
   measles:
     R_0: 15
     days_until_death: 12
@@ -49,3 +48,4 @@ train:
       how_many_days: 500
       incubation_period: 5
       infection_period: 14
+accuracy: 1
