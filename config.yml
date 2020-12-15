@@ -1,5 +1,5 @@
 # change this to change the model used
-model_file: "skor.model-conf.yml"
+model_file: "usa.model-conf.yml"
 
 # change this depending on what you want to do.
 # fit trains the algorithm

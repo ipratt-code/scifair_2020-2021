@@ -46,37 +46,12 @@ how_long = mod_data["train"]
 
 country_name = mod_data["model_constants"]["name"]
 
-# read the data
-agegroups = pd.read_csv(Path("data/agegroups.csv"))
-# probabilities = pd.read_csv("data/probabilities.csv")
 covid_data = pd.read_csv(
     Path("data/owid-covid-data.csv"),
-    # parse_dates=["date"],
-    # skiprows=[1],
 )
-# covid_data["Location"] = covid_data["Country/Region"]
 
-# create some dicts for fast lookup
-# 1. agegroups
-agegroup_lookup = dict(
-    zip(
-        agegroups["Location"],
-        agegroups[
-            [
-                "0_9",
-                "10_19",
-                "20_29",
-                "30_39",
-                "40_49",
-                "50_59",
-                "60_69",
-                "70_79",
-                "80_89",
-                "90_100",
-            ]
-        ].values,
-    )
-)
+pop_size_data = pd.read_csv(Path("data/projected-population-by-country.csv"))
+
 
 starting_infected = 1  # how many people start infected
 starting_dead = 0  # how many people start dead
@@ -188,16 +163,10 @@ def deriv(
     delta,
     rho,
     alpha,
+    epsilon,
     N,
-    mask_effectiveness_in,
-    mask_effectiveness_out,
-    compliance,
 ):
     S, E, I, R, D = y
-
-    epsilon = (1 - mask_effectiveness_in * compliance) * (
-        1 - mask_effectiveness_out * compliance
-    )
 
     dSdt = -beta(t) * S * I * epsilon / N
     dEdt = beta(t) * S * I * epsilon / N - delta * E
@@ -207,9 +176,6 @@ def deriv(
 
     return dSdt, dEdt, dIdt, dRdt, dDdt
 
-
-# gamma = 1.0 / 9.0
-# sigma = 1.0 / 3.0
 
 """
 # DEPRECIATED: not used
@@ -257,6 +223,10 @@ def Model(
             * gamma
         )
 
+    epsilon = (1 - mask_effectiveness_in * compliance) * (
+        1 - mask_effectiveness_out * compliance
+    )
+
     N = population_size
 
     y0 = N - 1.0, 1.0, 0.0, 0.0, 0.0  # , 0.0
@@ -271,10 +241,8 @@ def Model(
             delta,
             rho,
             alpha,
+            epsilon,
             N,
-            mask_effectiveness_in,
-            mask_effectiveness_out,
-            compliance,
         ),
     )
     S, E, I, R, D = ret.T
@@ -284,14 +252,15 @@ def Model(
 
 
 # parameters
-data = covid_data[covid_data["location"] == country_name][
-    "total_deaths"
-]  # .values[::-1]
-try:
-    population_size = sum(agegroup_lookup[country_name])
-except:
-    population_size = 30000000
-# beds_per_100k = beds_lookup["Italy"]
+data = covid_data[covid_data["location"] == country_name]["total_deaths"]
+population_size = int(
+    pop_size_data[pop_size_data["Entity"] == country_name][
+        pop_size_data["Year"] == 2020
+    ][
+        "Population by country and region, historic and projections (Gapminder, HYDE & UN)"
+    ]
+)
+
 outbreak_shift = 30
 params_init_min_max = {
     "R_0_start_mult": (1.0, 0.3, 5.0),

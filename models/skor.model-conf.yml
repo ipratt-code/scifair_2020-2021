@@ -1,20 +1,19 @@
-accuracy: 0.9960619035740538
+accuracy: 0.996061348438535
 flexible_params:
-  R_0_end_mult: 0.30000044434211365
-  R_0_middle_mult: 4.053750064221749
-  R_0_start_mult: 1.0241147245513413
-  compliance: 0.8731183826949385
-  k1: 4.797916730949491
-  k2: 2.920073953966833
-  mask_effectiveness_in: 0.7379491798258071
-  mask_effectiveness_out: 0.742254463960659
-  x01: 146.97880900184475
-  x02: 80.65575329998181
+  R_0_end_mult: 1.2166704723564692
+  R_0_middle_mult: 0.3000054170282307
+  R_0_start_mult: 4.150928077529799
+  compliance: 0.6495106083865415
+  k1: 4.794044853050954
+  k2: 4.880225363150885
+  mask_effectiveness_in: 0.5442315461411831
+  mask_effectiveness_out: 0.5470198034515573
+  x01: 80.81345868506172
+  x02: 146.48111056655256
 model_constants:
   fit_method: least_sqares
   how_many_days: 500
   name: South Korea
-  population_size: 1
 test:
   1918h1n1:
     R_0: 2.5

@@ -1,19 +1,19 @@
+accuracy: 0.9926920175501467
 flexible_params:
-  R_0_end_mult: 0.3000039396448761
-  R_0_middle_mult: 1.2769262046076193
-  R_0_start_mult: 1.8353202424368482
-  compliance: 0.6342926039375912
-  k1: 4.940394609789104
-  k2: 1.6258307254504456
-  mask_effectiveness_in: 0.5568145484760095
-  mask_effectiveness_out: 0.5582795346851287
-  x01: 73.16205985890957
-  x02: 67.42890190020573
+  R_0_end_mult: 0.3922233547838296
+  R_0_middle_mult: 0.8825936807411557
+  R_0_start_mult: 2.4845449019436874
+  compliance: 0.6808357107018803
+  k1: 2.422465107148524
+  k2: 3.852817476408514
+  mask_effectiveness_in: 0.5880149719795713
+  mask_effectiveness_out: 0.5880859808773649
+  x01: 85.22185236882957
+  x02: 85.69339535653475
 model_constants:
   fit_method: least_sqares
   how_many_days: 500
   name: United States
-  population_size: 1
 test:
   1918h1n1:
     R_0: 2.5
@@ -48,4 +48,3 @@ train:
       how_many_days: 500
       incubation_period: 5
       infection_period: 14
-accuracy: 1
