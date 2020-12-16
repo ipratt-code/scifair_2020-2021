@@ -62,7 +62,7 @@ delta = 1.0 / Incubation_period  # incubation period
 rho = 1 / days_till_death  # days from infection until death
 
 
-def plotter(t, S, E, I, R, D, R_0, S_1=None, S_2=None, x_ticks=None):
+def plotter(t, S, E, I, R, D, R_0, compliance, S_1=None, S_2=None, x_ticks=None):
 
     f, ax = plt.subplots(1, 1, figsize=(20, 4))
     if x_ticks is None:
@@ -113,18 +113,17 @@ def plotter(t, S, E, I, R, D, R_0, S_1=None, S_2=None, x_ticks=None):
 
     # sp2
     ax2 = f.add_subplot(132)
-    newDs = [0] + [D[i] - D[i - 1] for i in range(1, len(t))]
     if x_ticks is None:
-        ax2.plot(t, newDs, "r--", alpha=0.7, linewidth=2, label="total")
+        ax2.plot(t, compliance, "r--", alpha=0.7, linewidth=2, label="total")
 
     else:
-        ax2.plot(x_ticks, newDs, "r--", alpha=0.7, linewidth=2, label="total")
+        ax2.plot(x_ticks, compliance, "r--", alpha=0.7, linewidth=2, label="total")
         ax2.xaxis.set_major_locator(mdates.YearLocator())
         ax2.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
         ax2.xaxis.set_minor_locator(mdates.MonthLocator())
         f.autofmt_xdate()
 
-    ax2.title.set_text("Deaths per day")
+    ax2.title.set_text("Compliance over time")
     ax2.yaxis.set_tick_params(length=0)
     ax2.xaxis.set_tick_params(length=0)
     ax2.grid(b=True, which="major", c="w", lw=2, ls="-")
@@ -168,8 +167,8 @@ def deriv(
 ):
     S, E, I, R, D = y
 
-    dSdt = -beta(t) * S * I * epsilon / N
-    dEdt = beta(t) * S * I * epsilon / N - delta * E
+    dSdt = -beta(t) * S * I * epsilon(t) / N
+    dEdt = beta(t) * S * I * epsilon(t) / N - delta * E
     dIdt = delta * E - (1 - alpha) * gamma * I - alpha * rho * I
     dRdt = (1 - alpha) * gamma * I
     dDdt = alpha * rho * I
@@ -177,22 +176,19 @@ def deriv(
     return dSdt, dEdt, dIdt, dRdt, dDdt
 
 
-"""
-# DEPRECIATED: not used
-def logistic_R_0(t, R_0_start_mult, k, x0, R_0_end_mult):
-    return (R_0_start_mult - R_0_end_mult) / (1 + np.exp(-k * (-t + x0))) + R_0_end_mult
-"""
+def logistic(t, l, l_start_mult, k, x0, l_end_mult):
+    return (l_start_mult * l - l_end_mult * l) / (
+        1 + np.exp(-k * (-t + x0))
+    ) + l_end_mult * l
 
 
-def double_logistic_R_0(
-    t, R_0, R_0_start_mult, k1, x01, R_0_middle_mult, k2, x02, R_0_end_mult
-):
+def double_logistic(t, l, l_start_mult, k1, x01, l_middle_mult, k2, x02, l_end_mult):
     return (
-        (R_0_start_mult * R_0 - R_0_middle_mult * R_0) / (1 + np.exp(-k1 * (-t + x01)))
-        + R_0_middle_mult * R_0
+        (l_start_mult * l - l_middle_mult * l) / (1 + np.exp(-k1 * (-t + x01)))
+        + l_middle_mult * l
     ) * (
-        (R_0_middle_mult * R_0 - R_0_end_mult * R_0) / (1 + np.exp(-k2 * (-t + x02)))
-        + R_0_end_mult * R_0
+        (l_middle_mult * l - l_end_mult * l) / (1 + np.exp(-k2 * (-t + x02)))
+        + l_end_mult * l
     )
 
 
@@ -214,18 +210,34 @@ def Model(
     mask_effectiveness_in,
     mask_effectiveness_out,
     compliance,
+    compliance_start_mult,
+    compliance_k,
+    compliance_x0,
+    compliance_end_mult,
 ):
     def beta(t):
         return (
-            double_logistic_R_0(
+            double_logistic(
                 t, R_0, R_0_start_mult, k1, x01, R_0_middle_mult, k2, x02, R_0_end_mult
             )
             * gamma
         )
 
-    epsilon = (1 - mask_effectiveness_in * compliance) * (
-        1 - mask_effectiveness_out * compliance
-    )
+    def compliance_t(t):
+        return logistic(
+            t,
+            compliance,
+            compliance_start_mult,
+            compliance_k,
+            compliance_x0,
+            compliance_end_mult,
+        )
+
+    def epsilon(t):
+
+        return (1 - mask_effectiveness_in * compliance_t(t)) * (
+            1 - mask_effectiveness_out * compliance_t(t)
+        )
 
     N = population_size
 
@@ -247,8 +259,9 @@ def Model(
     )
     S, E, I, R, D = ret.T
     R_0_over_time = [beta(i) / gamma for i in range(len(t))]
+    compliance_over_time = [compliance_t(i) for i in range(len(t))]
 
-    return (t, S, E, I, R, D, R_0_over_time)
+    return (t, S, E, I, R, D, R_0_over_time, compliance_over_time)
 
 
 # parameters
@@ -273,6 +286,10 @@ params_init_min_max = {
     "mask_effectiveness_in": (0.5, 0.0, 1.0),
     "mask_effectiveness_out": (0.5, 0.0, 1.0),
     "compliance": (0.6, 0.0, 1.0),
+    "compliance_start_mult": (1.0, 0.0, 1.0),
+    "compliance_k": (1.0, 0.001, 10.0),
+    "compliance_x0": (90, 0, 300),
+    "compliance_end_mult": (1.0, 0.0, 1.0),
 }  # form: {parameter: (initial guess, minimum value, max value)}
 
 days = outbreak_shift + len(data)
@@ -290,6 +307,10 @@ def fitter(
     mask_effectiveness_in,
     mask_effectiveness_out,
     compliance,
+    compliance_start_mult,
+    compliance_k,
+    compliance_x0,
+    compliance_end_mult,
 ):
     ret = Model(
         days,
@@ -309,6 +330,10 @@ def fitter(
         mask_effectiveness_in,
         mask_effectiveness_out,
         compliance,
+        compliance_start_mult,
+        compliance_k,
+        compliance_x0,
+        compliance_end_mult,
     )
     return ret[5][x]
 
@@ -410,6 +435,10 @@ def predict(model_file):
         "mask_effectiveness_in": 0,
         "mask_effectiveness_out": 0,
         "compliance": 0,
+        "compliance_start_mult": 0,
+        "compliance_k": 0,
+        "compliance_x0": 0,
+        "compliance_end_mult": 0,
     }
 
     days = mod["model_constants"]["how_many_days"]
@@ -434,17 +463,27 @@ def predict(model_file):
     # print(flex_params)
     # print(disease_params)
 
+    modelData = Model(
+        days,
+        population_size,
+        gamma,
+        delta,
+        rho,
+        alpha,
+        R_0,
+        **flex_params,
+    )
+
+    dfData = pd.DataFrame(
+        modelData[1:6],
+        index=["Susceptible", "Exposed", "Infected", "Recovered", "Dead"],
+    )
+    fileName = mod["model_constants"]["name"] + "_" + test_disease + ".csv"
+    if config["save_data"] == True:
+        dfData.to_csv(fileName)
+
     plotter(
-        *Model(
-            days,
-            population_size,
-            gamma,
-            delta,
-            rho,
-            alpha,
-            R_0,
-            **flex_params,
-        ),
+        *modelData,
         x_ticks=None,
     )
 
@@ -453,7 +492,7 @@ def askFitOrPredict():
     inp = input(
         "Please type fit (f) or predict (p) depending on what you want to do. \n\
 The config.yml file has an incorrect input for the option fit_or_predict \
-and therefore requrires user input.\n[Fit(f)/Predict(p)]:"
+and therefore requrires user input.\n[fit(f)/predict(p)]:"
     )
     if inp == "fit" or inp == "f":
         return "fit"

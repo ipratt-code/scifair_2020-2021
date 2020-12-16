@@ -17,3 +17,4 @@ train:
 test:
   disease_name: "smallpox"
 
+save_data: False
