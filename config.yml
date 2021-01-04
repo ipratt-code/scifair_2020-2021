@@ -1,20 +1,20 @@
 # change this to change the model used
-model_file: "usa.model-conf.yml"
+model_file: "skor.model-conf.yml"
 
 # change this depending on what you want to do.
 # fit trains the algorithm
 # predict puts the algorithm against diseases and makes it simulate what will happen
-fit_or_predict: "fit"
+fit_or_predict: "predict"
 
 # DO NOT CHANGE THIS
-# there is no data to replace this for other diseases 
+# there is no data to replace this for other diseases
 train:
   disease_name: "coronavirus"
 
 # There are 4 different diseases to choose from:
-# COVID-19 (coronavirus), Measles (measles), 
+# COVID-19 (coronavirus), Measles (measles),
 # Smallpox (smallpox), and H1N1 flu, 1918 variation (1918h1n1)
 test:
-  disease_name: "smallpox"
+  disease_name: "coronavirus"
 
-save_data: False
+save_data: True

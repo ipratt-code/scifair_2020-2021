@@ -14,5 +14,5 @@ Download this repo, and extract if necissary.<br>
 Run `python3 -mpip install -r requirements.txt` to install the prerequisites and run the program.<br>
 - [x] configuration with YAML file
 - [x] `fit` function
-- [ ] `predict` function
-- [ ] migrate _all_ variables from hard-coded to yaml configuration
+- [x] `predict` function
+- [x] migrate _all_ variables from hard-coded to yaml configuration

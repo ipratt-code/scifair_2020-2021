@@ -480,7 +480,7 @@ def predict(model_file):
     )
     fileName = mod["model_constants"]["name"] + "_" + test_disease + ".csv"
     if config["save_data"] == True:
-        dfData.to_csv(fileName)
+        dfData.to_csv(fileName, sep=",", encoding="utf-8")
 
     plotter(
         *modelData,
