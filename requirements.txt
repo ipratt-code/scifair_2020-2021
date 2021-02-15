@@ -4,4 +4,4 @@ matplotlib==3.3.4
 lmfit == 1.0.1
 pyyaml==5.4.1
 scikit-learn==0.24.1
-pandas
+pandas==1.2.2
