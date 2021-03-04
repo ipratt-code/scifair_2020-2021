@@ -47,10 +47,10 @@ how_long = mod_data["train"]
 country_name = mod_data["model_constants"]["name"]
 
 covid_data = pd.read_csv(
-    Path("data/owid-covid-data.csv"),
+    Path("training-data/owid-covid-data.csv"),
 )
 
-pop_size_data = pd.read_csv(Path("data/projected-population-by-country.csv"))
+pop_size_data = pd.read_csv(Path("training-data/projected-population-by-country.csv"))
 
 
 starting_infected = 1  # how many people start infected
